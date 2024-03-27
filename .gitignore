@@ -1,0 +1,19 @@
+# Node.js / Express
+node_modules/
+npm-debug.log
+yarn-error.log
+.env
+
+# Vue.js
+/dist/
+/node_modules/
+
+# Editor
+.vscode/
+.idea/
+
+# Dependency directories
+/pnpm-lock.yaml
+/package-lock.json
+/yarn.lock
+resources
