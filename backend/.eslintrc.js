@@ -18,6 +18,7 @@ module.exports = {
 		// project: ['./backend/tsconfig.json']
 	},
 	rules: {
+		'@typescript-eslint/no-explicit-any': 'warn',
 		'prettier/prettier': [
 			'error',
 			{
