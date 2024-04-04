@@ -17,11 +17,13 @@ app.get('/', (req: Request, res: Response) => {
 });
 routes(app);
 app.use((err: any, req: any, res: any) => {
-	if (err.isAxiosError) {
-		console.log(err);
-		res.json(err.response.data);
+	if (err.message) {
+		if (err.isAxiosError) {
+			console.log(err);
+			res.json(err.response.data);
+		}
+		console.log(err.message);
 	}
-	console.log(err);
 });
 process.on('uncaughtException', function (err: Error | AxiosError) {
 	console.log('Uncaught Exception: ', err.message);

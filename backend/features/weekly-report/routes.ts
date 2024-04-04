@@ -43,9 +43,9 @@ router.get('/csv', async (req, res, next) => {
 				};
 				let message = '';
 				const emojis: Record<string, string> = {
-					Closed: '&#x1f7e2;',
-					'in review': '&#x1f7e0;',
-					'in progress': '&#x1f535;',
+					Closed: '🟢',
+					'in review': '🟡',
+					'in progress': '🔵',
 				};
 				for (const person in result) {
 					const tasks = sortTask(result[person]);
