@@ -13,6 +13,7 @@ router.get('/csv', async (req, res, next) => {
 			.on('error', (error) => console.error(error))
 			.on('data', (row) => {
 				// jsonData.push(row);
+				// return;
 				const assignees = row['Assignee'].replace(/^\[|\]$/g, '').split(',');
 				if (assignees.length > 1) {
 					return;
@@ -24,9 +25,12 @@ router.get('/csv', async (req, res, next) => {
 					status: row['Status'],
 					priority: row['Priority'],
 					list: row['List'],
+					points: row['Points Estimate'],
 				});
 			})
 			.on('end', () => {
+				// res.json(jsonData);
+				// return;
 				const result = jsonData.reduce(function (r, a) {
 					r[a.assignee] = r[a.assignee] || [];
 					r[a.assignee].push(a);
@@ -47,12 +51,19 @@ router.get('/csv', async (req, res, next) => {
 					'in review': '🟡',
 					'in progress': '🔵',
 				};
+				const pointsEmojis: Record<string, string> = {
+					'1': '🔥',
+					'2': '🔥🔥',
+					'3': '🔥🔥🔥',
+					'5': '🔥🔥🔥🔥',
+					'8': '🔥🔥🔥🔥🔥',
+				};
 				for (const person in result) {
 					const tasks = sortTask(result[person]);
 					result[person] = tasks;
 					message += `<strong>${person}:</strong> <br>`;
 					tasks.forEach((task) => {
-						message += `- ${emojis[task.status] || task.status} [<a href="https://app.clickup.com/t/2338706/${task.id}">${task.id}</a>] ${task.name} <br>`;
+						message += `${emojis[task.status] || task.status} [<a href="https://app.clickup.com/t/2338706/${task.id}">${task.id}</a>] (${pointsEmojis[task.points] || 'null'}) ${task.name} <br>`;
 					});
 					message += '<br>';
 				}

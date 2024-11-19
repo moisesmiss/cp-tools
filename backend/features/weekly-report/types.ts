@@ -5,4 +5,5 @@ export type Task = {
 	status: string;
 	priority: string;
 	list: string;
+	points: string;
 };
