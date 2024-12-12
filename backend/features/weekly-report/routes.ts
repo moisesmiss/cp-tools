@@ -69,29 +69,23 @@ router.get('/csv', async (req, res, next) => {
 					'in progress': '🔵',
 					default: '🟡', // emoji por defecto para todos los demás estados
 				};
-				const pointsEmojis: Record<string, string> = {
-					'1': '🔥',
-					'2': '🔥🔥',
-					'3': '🔥🔥🔥',
-					'5': '🔥🔥🔥🔥',
-					'8': '🔥🔥🔥🔥🔥',
-				};
 				for (const person in result) {
 					const sortedTasks = sortTask(result[person].tasks);
 					result[person].tasks = sortedTasks;
-					message += `<strong>${person}:</strong> (🔥 ${result[person].totalSprintPoints}) <br>`;
+					message += `<strong>${person}:</strong> (🔥 ${result[person].totalSprintPoints})(🏖️ HOLIDAYS) <br>`;
 					sortedTasks.forEach((task) => {
-						message += `${task.status === 'Closed' || task.status === 'in progress' ? emojis[task.status] : emojis.default} [<a href="https://app.clickup.com/t/2338706/${task.id}">${task.id}</a>] (${pointsEmojis[task.points] || 'null'}) ${task.isCollaborative ? '👥 ' : ''} ${task.name}${task.collaborators.length ? ` (with ${task.collaborators.join(', ')})` : ''} <br>`;
+						message += `${task.status === 'Closed' || task.status === 'in progress' ? emojis[task.status] : emojis.default} <a href="https://app.clickup.com/t/2338706/${task.id}">🔗</a> (🔥 ${task.points || 'null'}) ${task.isCollaborative ? '👥 ' : ''} ${task.name}${task.collaborators.length ? ` (with ${task.collaborators.join(', ')})` : ''} <br>`;
 					});
 					message += '<br>';
 				}
 
 				message += '<br>';
 				for (const status of Object.keys(emojis)) {
-					message += `${emojis[status]} = ${status}<br>`;
+					message += `${emojis[status]} = ${status === 'default' ? 'Other' : status}<br>`;
 				}
 				message += `🔥 = Difficulty<br>`;
 				message += `👥 = Collaborative task<br>`;
+				message += `🏖️ = Holidays<br>`;
 				res.send(`<p>${message}</p>`);
 			});
 	} catch (error) {
