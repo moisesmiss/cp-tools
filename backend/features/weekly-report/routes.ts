@@ -48,7 +48,9 @@ router.get('/csv', async (req, res, next) => {
 
 						if (hasIndividualTasks) {
 							acc[task.assignee].tasks.push(task);
-							acc[task.assignee].totalSprintPoints += Number(task.points) || 0;
+							if (task.status === 'Closed') {
+								acc[task.assignee].totalSprintPoints += Number(task.points) || 0;
+							}
 						}
 
 						return acc;
@@ -72,7 +74,7 @@ router.get('/csv', async (req, res, next) => {
 				for (const person in result) {
 					const sortedTasks = sortTask(result[person].tasks);
 					result[person].tasks = sortedTasks;
-					message += `<strong>${person}:</strong> (🔥 ${result[person].totalSprintPoints})(🏖️ HOLIDAYS) <br>`;
+					message += `<strong>${person}:</strong> (🟢🔥 ${result[person].totalSprintPoints})(🏖️ VACATIONS) <br>`;
 					sortedTasks.forEach((task) => {
 						message += `${task.status === 'Closed' || task.status === 'in progress' ? emojis[task.status] : emojis.default} <a href="https://app.clickup.com/t/2338706/${task.id}">🔗</a> (🔥 ${task.points || 'null'}) ${task.isCollaborative ? '👥 ' : ''} ${task.name}${task.collaborators.length ? ` (with ${task.collaborators.join(', ')})` : ''} <br>`;
 					});
@@ -83,9 +85,9 @@ router.get('/csv', async (req, res, next) => {
 				for (const status of Object.keys(emojis)) {
 					message += `${emojis[status]} = ${status === 'default' ? 'Other' : status}<br>`;
 				}
-				message += `🔥 = Difficulty<br>`;
+				message += `🔥 = Sprint Points<br>`;
 				message += `👥 = Collaborative task<br>`;
-				message += `🏖️ = Holidays<br>`;
+				message += `🏖️ = Vacations<br>`;
 				res.send(`<p>${message}</p>`);
 			});
 	} catch (error) {

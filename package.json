@@ -18,6 +18,7 @@
   "dependencies": {
     "axios": "^1.6.8",
     "axios-cache-adapter": "^2.7.3",
+    "base64url": "^3.0.1",
     "dotenv": "^16.4.5",
     "esm": "^3.2.25",
     "express": "^4.21.1",
@@ -26,7 +27,9 @@
     "markdown-builder": "^0.9.0",
     "memory-cache": "^0.2.0",
     "module-alias": "^2.2.3",
-    "multer": "^1.4.5-lts.1"
+    "multer": "^1.4.5-lts.1",
+    "otplib": "^12.0.1",
+    "protobufjs": "^7.4.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
